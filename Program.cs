@@ -8,6 +8,7 @@ namespace SchoolSearch
 {
     class Student
     {
+        // Властивості студента: прізвище, ім'я, клас, номер класу, автобусний маршрут, прізвище та ім'я вчителя
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public int Grade { get; set; }
@@ -16,6 +17,7 @@ namespace SchoolSearch
         public string TeacherLastName { get; set; }
         public string TeacherFirstName { get; set; }
 
+        // Парсинг рядка з файлу у об'єкт студента
         public static Student Parse(string line)
         {
             var parts = line.Split(',');
@@ -31,6 +33,7 @@ namespace SchoolSearch
             };
         }
 
+        // Перевизначення методу для виводу інформації про студента
         public override string ToString()
         {
             return $"{FirstName} {LastName}, Grade: {Grade}, Classroom: {Classroom}, Bus: {Bus}, Teacher: {TeacherFirstName} {TeacherLastName}";
@@ -39,24 +42,26 @@ namespace SchoolSearch
 
     class Program
     {
+        // Список студентів
         static List<Student> students = new List<Student>();
 
         static void Main(string[] args)
         {
-            // Check if the data file is available and load data
+            // Перевірка наявності файлу даних і завантаження даних
             string filePath = "../../students.txt";
             if (!LoadData(filePath))
             {
                 Console.WriteLine("Error: File 'students.txt' not found. Program will exit.");
-                return;  // Terminate the program if the file is not found
+                return;  // Завершення програми, якщо файл не знайдено
             }
 
-            // Main menu
+            // Головне меню
             while (true)
             {
                 ShowMenu();
                 var input = Console.ReadLine();
 
+                // Перевірка на завершення програми
                 if (input == null || input.Trim() == "6")
                     break;
 
@@ -64,6 +69,7 @@ namespace SchoolSearch
             }
         }
 
+        // Метод для відображення меню
         static void ShowMenu()
         {
             Console.WriteLine("\n--- Student Search Menu ---");
@@ -76,6 +82,7 @@ namespace SchoolSearch
             Console.Write("Choose an option: ");
         }
 
+        // Завантаження даних з файлу
         static bool LoadData(string filePath)
         {
             if (File.Exists(filePath))
@@ -94,6 +101,7 @@ namespace SchoolSearch
             }
         }
 
+        // Обробка введеної команди
         static void ProcessCommand(string input)
         {
             switch (input)
@@ -146,15 +154,15 @@ namespace SchoolSearch
             }
         }
 
-        // Tracking time for finding a student
+        // Пошук студента за прізвищем з відстеженням часу
         static void FindStudent(string lastName)
         {
             Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();  // Start timing the search
+            stopwatch.Start();  // Почати відлік часу пошуку
 
             var foundStudents = students.Where(s => s.LastName.ToUpper() == lastName.ToUpper()).ToList();
 
-            stopwatch.Stop();  // Stop timing the search
+            stopwatch.Stop();  // Зупинити відлік часу пошуку
             TimeSpan timeTaken = stopwatch.Elapsed;
 
             if (foundStudents.Count > 0)
@@ -169,19 +177,19 @@ namespace SchoolSearch
                 Console.WriteLine("Student not found.");
             }
 
-            // Print the time taken
+            // Вивести час пошуку
             Console.WriteLine($"Time taken for search: {timeTaken.TotalMilliseconds} ms\n");
         }
 
-        // Tracking time for finding bus route by student last name
+        // Пошук автобуса студента за прізвищем з відстеженням часу
         static void FindStudentBus(string lastName)
         {
             Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();  // Start timing the search
+            stopwatch.Start();  // Почати відлік часу пошуку
 
             var foundStudents = students.Where(s => s.LastName.ToUpper() == lastName.ToUpper()).ToList();
 
-            stopwatch.Stop();  // Stop timing the search
+            stopwatch.Stop();  // Зупинити відлік часу пошуку
             TimeSpan timeTaken = stopwatch.Elapsed;
 
             if (foundStudents.Count > 0)
@@ -196,19 +204,19 @@ namespace SchoolSearch
                 Console.WriteLine("Student not found.");
             }
 
-            // Print the time taken
+            // Вивести час пошуку
             Console.WriteLine($"Time taken for search: {timeTaken.TotalMilliseconds} ms\n");
         }
 
-        // Tracking time for finding students by teacher
+        // Пошук студентів за прізвищем викладача з відстеженням часу
         static void FindStudentsByTeacher(string teacherLastName)
         {
             Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();  // Start timing the search
+            stopwatch.Start();  // Почати відлік часу пошуку
 
             var foundStudents = students.Where(s => s.TeacherLastName.ToUpper() == teacherLastName.ToUpper()).ToList();
 
-            stopwatch.Stop();  // Stop timing the search
+            stopwatch.Stop();  // Зупинити відлік часу пошуку
             TimeSpan timeTaken = stopwatch.Elapsed;
 
             if (foundStudents.Count > 0)
@@ -223,19 +231,19 @@ namespace SchoolSearch
                 Console.WriteLine("No students found for this teacher.");
             }
 
-            // Print the time taken
+            // Вивести час пошуку
             Console.WriteLine($"Time taken for search: {timeTaken.TotalMilliseconds} ms\n");
         }
 
-        // Tracking time for finding students by classroom number
+        // Пошук студентів за номером класу з відстеженням часу
         static void FindStudentsByClassroom(int classroom)
         {
             Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();  // Start timing the search
+            stopwatch.Start();  // Почати відлік часу пошуку
 
             var foundStudents = students.Where(s => s.Classroom == classroom).ToList();
 
-            stopwatch.Stop();  // Stop timing the search
+            stopwatch.Stop();  // Зупинити відлік часу пошуку
             TimeSpan timeTaken = stopwatch.Elapsed;
 
             if (foundStudents.Count > 0)
@@ -250,19 +258,19 @@ namespace SchoolSearch
                 Console.WriteLine("No students found in this classroom.");
             }
 
-            // Print the time taken
+            // Вивести час пошуку
             Console.WriteLine($"Time taken for search: {timeTaken.TotalMilliseconds} ms\n");
         }
 
-        // Tracking time for finding students by bus number
+        // Пошук студентів за номером автобуса з відстеженням часу
         static void FindStudentsByBus(int busNumber)
         {
             Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();  // Start timing the search
+            stopwatch.Start();  // Почати відлік часу пошуку
 
             var foundStudents = students.Where(s => s.Bus == busNumber).ToList();
 
-            stopwatch.Stop();  // Stop timing the search
+            stopwatch.Stop();  // Зупинити відлік часу пошуку
             TimeSpan timeTaken = stopwatch.Elapsed;
 
             if (foundStudents.Count > 0)
@@ -277,7 +285,7 @@ namespace SchoolSearch
                 Console.WriteLine("No students found for this bus route.");
             }
 
-            // Print the time taken
+            // Вивести час пошуку
             Console.WriteLine($"Time taken for search: {timeTaken.TotalMilliseconds} ms\n");
         }
     }
