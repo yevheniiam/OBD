@@ -1,2 +1,2 @@
 INSERT INTO InsuranceTypes (InsuranceTypeID, Name, Description)
-VALUES (1, N'Health Insurance', N'Insurance for client health');
+VALUES (1, 'Health Insurance', 'Insurance for client health');
