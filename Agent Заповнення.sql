@@ -1,2 +1,3 @@
 INSERT INTO Agent (AgentID, FirstName, LastName, Address, Experience, Surname)
-VALUES (1, 'Іван', 'Петров', 'Харків, вул. Свободи, 1', 5, 'Сергійович');
+VALUES (1, 'Ivan', 'Petrov', 'Kharkiv, Svobody St., 1', 5, 'Serhiyovych');
+
