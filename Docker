@@ -1,0 +1,36 @@
+docker pull mcr.microsoft.com/mssql/server
+
+Запуск контейнера:
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=YourStrong!Passw0rd" -p 1433:1433 --name sqlserver -d mcr.microsoft.com/mssql/server
+
+Підʼєднання до контейнера:
+docker exec -it sqlserver /bin/bash
+
+Підʼєднання до БД з ms sql tools:
+sqlcmd -S localhost -U SA -P 'YourStrong!Passw0rd'
+
+Виведення версії MS SQL Server:
+SELECT @@VERSION;
+
+Зупинка контейнера:
+docker stop sqlserver
+
+Видалення контейнера:
+docker rm sqlserver
+
+Створення тома:
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=YourStrong!Passw0rd" -p 1433:1433 -v mssql-data:/var/opt/mssql --name sqlserver -d mcr.microsoft.com/mssql/server
+
+Перевірка підʼєднання тому: 
+docker inspect sqlserver | findstr "Mounts"
+Зупинка контейнера:
+docker stop sqlserver
+
+Видалення контейнера:
+docker rm sqlserver
+
+Запуск контейнера з томом:
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=YourStrong!Passw0rd" -p 1433:1433 -v mssql-data:/var/opt/mssql --name sqlserver -d mcr.microsoft.com/mssql/server
+
+Підʼєднання до БД:
+sqlcmd -S localhost -U SA -P 'YourStrong!Passw0rd'
