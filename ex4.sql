@@ -1,10 +1,20 @@
-SELECT * FROM Agent WHERE Experience > 10;
+SELECT 
+  AgentID,
+  CONCAT(FirstName, ' ', LastName) AS FullName
+FROM 
+  Agent;
 
-SELECT * FROM Contract WHERE InsuranceAmount > 20000;
+  SELECT 
+  EventID,
+  EventDescription,
+  LEFT(EventDescription, 3) AS ShortPrefix
+FROM 
+  InsuranceEvents;
 
-SELECT * FROM Agent WHERE Address LIKE '%NY%';
 
-SELECT * FROM Agent_Type_of_Insurance WHERE AgentID = 1;
-
-SELECT * FROM Contract WHERE CompanyPercentage > 0.15;
-
+  SELECT 
+  ClientID,
+  FirstName,
+  UPPER(FirstName) AS UppercaseFirstName
+FROM 
+  Client;

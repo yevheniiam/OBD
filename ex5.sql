@@ -1,9 +1,17 @@
-SELECT * FROM Contract WHERE InsuranceAmount > 20000 OR CompanyPercentage > 0.15;
+SELECT 
+  AgentID,
+  CONCAT(FirstName, ' ', LastName) AS FullName
+FROM Agent;
 
-SELECT * FROM Agent WHERE NOT Address LIKE '%CA%';
+SELECT 
+  EventID,
+  EventDescription,
+  LEN(EventDescription) AS DescriptionLength
+FROM InsuranceEvents;
 
-SELECT * FROM Agent_Type_of_Insurance WHERE AgentID = 1 OR AgentID = 2;
 
-SELECT * FROM Agent WHERE Experience > 5 AND NOT Address LIKE '%NY%';
-
-SELECT * FROM Contract WHERE InsuranceAmount > 15000 AND (AgentID BETWEEN 1 AND 5);
+SELECT 
+  EventID,
+  EventDescription,
+  UPPER(EventDescription) AS UpperCaseDescription
+FROM InsuranceEvents;

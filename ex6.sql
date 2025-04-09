@@ -1,9 +1,18 @@
-SELECT * FROM Agent WHERE Experience > 5 AND LastName LIKE 'S%';
+SELECT 
+  ContractID,
+  StartDate,
+  YEAR(StartDate) AS StartYear
+FROM Contract;
 
-SELECT * FROM Agent WHERE Address LIKE '%CA%' AND NOT Address LIKE 'New%';
 
-SELECT * FROM Contract WHERE InsuranceAmount LIKE '2%';
+SELECT 
+  ContractID,
+  DATEDIFF(DAY, StartDate, EndDate) AS DurationInDays
+FROM Contract;
 
-SELECT * FROM Agent WHERE Address LIKE '%NY%' OR Address LIKE '%LA%';
 
-SELECT * FROM Agent WHERE Address LIKE '%St%' OR Address LIKE '%Ave%';
+SELECT 
+  ContractID,
+  EndDate,
+  DATEDIFF(DAY, GETDATE(), EndDate) AS DaysRemaining
+FROM Contract;
