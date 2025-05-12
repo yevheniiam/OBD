@@ -1,26 +1,23 @@
-SELECT Agent.FirstName, Agent.LastName, Contract.ContractID, Contract.StartDate, Contract.EndDate
-FROM Agent
-JOIN Contract ON Agent.AgentID = Contract.AgentID;
+BEGIN TRAN;
 
-SELECT Contract.ContractID, Contract.StartDate, Contract.EndDate, Agent.FirstName AS AgentName, Client.FirstName AS ClientName
-FROM Contract
-JOIN Agent ON Contract.AgentID = Agent.AgentID
-JOIN Client ON Contract.ClientID = Client.ClientID;
+BEGIN TRY
+    -- Оновлення даних в таблиці Agent
+    UPDATE Agent
+    SET Experience = 10
+    WHERE AgentID = 1;
+    
+    -- Оновлення даних в таблиці Client
+    UPDATE Client
+    SET PhoneNumber = '555-123-4567'
+    WHERE ClientID = 1;
 
-SELECT Contract.ContractID, Contract.InsuranceAmount, Agent.FirstName AS AgentName
-FROM Contract
-JOIN Agent ON Contract.AgentID = Agent.AgentID
-WHERE Contract.InsuranceAmount > 15000;
+    -- Якщо все в порядку, підтверджуємо транзакцію
+    COMMIT;
+    PRINT 'Transaction completed successfully!';
+END TRY
 
-SELECT Client.FirstName AS ClientName, Contract.ContractID, Contract.InsuranceAmount, Agent.FirstName AS AgentName
-FROM Contract
-JOIN Client ON Contract.ClientID = Client.ClientID
-JOIN Agent ON Contract.AgentID = Agent.AgentID
-WHERE Contract.InsuranceAmount > 20000;
-
-SELECT Client.FirstName AS ClientFirstName, Client.LastName AS ClientLastName, Agent.FirstName AS AgentFirstName, Agent.LastName AS AgentLastName, Contract.InsuranceAmount
-FROM Contract
-JOIN Client ON Contract.ClientID = Client.ClientID
-JOIN Agent ON Contract.AgentID = Agent.AgentID
-WHERE Contract.InsuranceAmount > 20000;
-
+BEGIN CATCH
+    -- У випадку помилки скасовуємо транзакцію
+    ROLLBACK;
+    PRINT 'Error occurred: ' + ERROR_MESSAGE();
+END CATCH;

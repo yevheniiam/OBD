@@ -1,15 +1,23 @@
-SELECT 'Agent' AS TableName, COUNT(*) AS RecordCount FROM Agent
-UNION ALL
-SELECT 'Client', COUNT(*) FROM Client
-UNION ALL
-SELECT 'InsuranceTypes', COUNT(*) FROM InsuranceTypes
-UNION ALL
-SELECT 'Cabinet' AS TableName, COUNT(*) AS RecordCount FROM Cabinet
-UNION ALL
-SELECT 'Agent_Cabinet', COUNT(*) FROM Agent_Cabinet
-UNION ALL
-SELECT 'InsuranceEvents', COUNT(*) FROM InsuranceEvents
-UNION ALL
-SELECT 'Agent_Type_of_Insurance', COUNT(*) FROM Agent_Type_of_Insurance
-UNION ALL
-SELECT 'Contract', COUNT(*) FROM Contract;
+BEGIN TRANSACTION; -- Start of the transaction
+
+BEGIN TRY
+    -- Update the agent's experience in the Agent table
+    UPDATE Agent
+    SET Experience = 10
+    WHERE AgentID = 1;
+
+    -- Update the client's phone number in the Client table
+    UPDATE Client
+    SET PhoneNumber = '123-456-7890'
+    WHERE ClientID = 1;
+
+    -- If everything is successful, commit the transaction
+    COMMIT TRANSACTION;
+    PRINT 'Transaction completed successfully!';
+END TRY
+
+BEGIN CATCH
+    -- If an error occurs, roll back the transaction
+    ROLLBACK TRANSACTION;
+    PRINT 'Transaction was rolled back due to an error!';
+END CATCH;

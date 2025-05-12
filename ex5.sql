@@ -1,17 +1,25 @@
-SELECT 
-  AgentID,
-  CONCAT(FirstName, ' ', LastName) AS FullName
-FROM Agent;
+BEGIN TRAN;
 
-SELECT 
-  EventID,
-  EventDescription,
-  LEN(EventDescription) AS DescriptionLength
-FROM InsuranceEvents;
+BEGIN TRY
+    -- Оновлення даних у таблиці Agent
+    UPDATE Agent
+    SET Experience = 20
+    WHERE AgentID = 1;
 
+    -- Оновлення даних у таблиці Client
+    UPDATE Client
+    SET PhoneNumber = '555-123-4567'
+    WHERE ClientID = 1;
 
-SELECT 
-  EventID,
-  EventDescription,
-  UPPER(EventDescription) AS UpperCaseDescription
-FROM InsuranceEvents;
+    -- Якщо все успішно, підтверджуємо транзакцію
+    COMMIT;
+
+END TRY
+
+BEGIN CATCH
+    -- Якщо сталася помилка, скасовуємо транзакцію
+    ROLLBACK;
+
+    -- Виводимо повідомлення про помилку
+    PRINT 'Error occurred: ' + ERROR_MESSAGE();
+END CATCH;

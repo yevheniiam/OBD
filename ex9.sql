@@ -1,27 +1,31 @@
-SELECT FirstName, LastName, Experience
-FROM Agent
-WHERE AgentID IN (SELECT AgentID FROM Contract WHERE InsuranceAmount > 15000);
+BEGIN TRANSACTION;
 
-SELECT ContractID, StartDate, EndDate, InsuranceAmount
-FROM Contract
-WHERE AgentID IN (SELECT AgentID FROM Agent WHERE Experience > 10);
+BEGIN TRY
+    -- 1. Вставляю нового агента
+    INSERT INTO Agent (FirstName, LastName, Email, Experience)
+    VALUES ('Petro', 'Ivanenko', 'petro.ivanenko@example.com', 7);
 
-SELECT ContractID, InsuranceAmount
-FROM Contract
-WHERE InsuranceAmount > (SELECT AVG(InsuranceAmount) FROM Contract);
+    -- Зберігаю новий AgentID
+    DECLARE @NewAgentID INT = SCOPE_IDENTITY();
 
-SELECT ContractID, AgentID, InsuranceAmount
-FROM Contract
-WHERE InsuranceAmount = (
-    SELECT MAX(InsuranceAmount)
-    FROM Contract AS C
-    WHERE C.AgentID = Contract.AgentID
-);
+    -- 2. Вставляю нового клієнта
+    INSERT INTO Client (FirstName, LastName, PhoneNumber)
+    VALUES ('Olena', 'Shevchenko', '111-222-3333');
 
-SELECT FirstName, LastName, Address
-FROM Agent
-WHERE AgentID IN (
-    SELECT DISTINCT AgentID
-    FROM Contract
-    WHERE InsuranceAmount > 15000
-);
+    -- Зберігаю новий ClientID
+    DECLARE @NewClientID INT = SCOPE_IDENTITY();
+
+    -- 3. Додаю контракт між агентом і клієнтом
+    INSERT INTO Contract (AgentID, ClientID, StartDate, EndDate, InsuranceAmount, CompanyPercentage)
+    VALUES (@NewAgentID, @NewClientID, GETDATE(), DATEADD(YEAR, 1, GETDATE()), 10000.00, 10.00);
+
+    -- Успішне завершення
+    COMMIT TRANSACTION;
+    PRINT 'Усі дії виконано успішно.';
+END TRY
+
+BEGIN CATCH
+    -- У разі помилки — скасування змін
+    ROLLBACK TRANSACTION;
+    PRINT 'Транзакцію скасовано через помилку: ' + ERROR_MESSAGE();
+END CATCH;
