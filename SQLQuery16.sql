@@ -1,0 +1,4 @@
+CREATE OR ALTER VIEW vClientsFromUSA AS
+SELECT *
+FROM Client
+WHERE Address LIKE '%USA%';
